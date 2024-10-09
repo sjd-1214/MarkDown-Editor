@@ -34,4 +34,6 @@ window.onload = function() {
     };
 
     pad.addEventListener('input', convertTextAreaToMarkdown);
+
+    convertTextAreaToMarkdown();
 };
