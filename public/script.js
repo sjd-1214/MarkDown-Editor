@@ -1,7 +1,7 @@
 window.onload = function() {
-    let converter = new showdown.Converter();
-    let pad = document.getElementById('pad');
-    let markdownArea = document.getElementById('markdown');
+    var converter = new showdown.Converter();
+    var pad = document.getElementById('pad');
+    var markdownArea = document.getElementById('markdown');
 
     pad.addEventListener('keydown', function(e) {
         if (e.key === 'Tab') {
@@ -29,10 +29,26 @@ window.onload = function() {
 
     let convertTextAreaToMarkdown = function(){
         var markdownText = pad.value;
+        previousMarkdownValue = markdownText;
         html = converter.makeHtml(markdownText);
         markdownArea.innerHTML = html;
     };
 
+    var didChangeOccur = function(){
+        if(previousMarkdownValue != pad.value){
+            return true;
+        }
+        return false;
+    };
+
+    // check every second if the text area has changed
+    setInterval(function(){
+        if(didChangeOccur()){
+            convertTextAreaToMarkdown();
+        }
+    }, 1000);
+
+    // convert textarea on input change
     pad.addEventListener('input', convertTextAreaToMarkdown);
 
     convertTextAreaToMarkdown();
