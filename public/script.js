@@ -29,24 +29,10 @@ window.onload = function() {
 
     let convertTextAreaToMarkdown = function(){
         var markdownText = pad.value;
-        previousMarkdownValue = markdownText;
         html = converter.makeHtml(markdownText);
         markdownArea.innerHTML = html;
     };
 
-    var didChangeOccur = function(){
-        if(previousMarkdownValue != pad.value){
-            return true;
-        }
-        return false;
-    };
-
-    // check every second if the text area has changed
-    setInterval(function(){
-        if(didChangeOccur()){
-            convertTextAreaToMarkdown();
-        }
-    }, 1000);
 
     // convert textarea on input change
     pad.addEventListener('input', convertTextAreaToMarkdown);
