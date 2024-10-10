@@ -1,8 +1,9 @@
 window.onload = function() {
-    let converter = new showdown.Converter();
-    let pad = document.getElementById('pad');
-    let markdownArea = document.getElementById('markdown');
+    var converter = new showdown.Converter();
+    var pad = document.getElementById('pad');
+    var markdownArea = document.getElementById('markdown');
 
+    // make the tab act like a tab
     pad.addEventListener('keydown',function(e) {
         if(e.keyCode === 9) { // tab was pressed
             // get caret position/selection
@@ -25,12 +26,44 @@ window.onload = function() {
         }
     });
 
+    var previousMarkdownValue;
 
-    let convertTextAreaToMarkdown = function(){
+    // convert text area to markdown html
+    var convertTextAreaToMarkdown = function(){
         var markdownText = pad.value;
+        previousMarkdownValue = markdownText;
         html = converter.makeHtml(markdownText);
         markdownArea.innerHTML = html;
     };
 
+    var didChangeOccur = function(){
+        if(previousMarkdownValue != pad.value){
+            return true;
+        }
+        return false;
+    };
+
+    // check every second if the text area has changed
+    setInterval(function(){
+        if(didChangeOccur()){
+            convertTextAreaToMarkdown();
+        }
+    }, 1000);
+
+    // convert textarea on input change
     pad.addEventListener('input', convertTextAreaToMarkdown);
+
+    // ignore if on home page
+    if(document.location.pathname.length > 1){
+        // implement share js
+        var documentName = document.location.pathname.substring(1);
+        sharejs.open(documentName, 'text', function(error, doc) {
+            doc.attach_textarea(pad);
+            convertTextAreaToMarkdown();
+        });
+    }
+
+    // convert on page load
+    convertTextAreaToMarkdown();
+
 };
