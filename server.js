@@ -1,15 +1,21 @@
-const express = require('express');
-const app = express();
+var express = require('express');
+    var app = express();
 
-app.set('view engine','ejs');
+    // set the view engine to ejs
+    app.set('view engine', 'ejs');
 
-app.use(express.static(__dirname + '/public'));
+    // public folder to store assets
+    app.use(express.static(__dirname + '/public'));
 
-app.get('/',(req,res)=>{
-    res.render('home');
-})
+    // routes for app
+    app.get('/', function(req, res) {
+      res.render('Home');
+    });
+    app.get('/(:id)', function(req, res) {
+      res.render('pad');
+    });
 
-app.listen(3000,(req,res)=>{
-    console.log('Server is started at Port 3000')
-    
-})
+    app.listen(3000,(req,res)=>{
+        console.log('The Server is connected to port 3000');
+        
+    });
